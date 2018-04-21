@@ -4,7 +4,7 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-conf=Import('../data/config.py')
+conf=Import('/bouamrene_diop_lecalvez_ranem/data/config.py')
 config=conf.configBD()
 
 def connexion():
@@ -44,7 +44,7 @@ def verif_connect(login,pwd):
     return liste[0] if len(liste)==1 else None
 
 def get_aerodromes():
-    sql = "SELECT idAerodrome, lat, lon FROM aerodrome"
+    sql = "SELECT idAerodrome, latitude, longitude FROM aerodrome"
 
     try:
         cnx = connexion()
@@ -52,7 +52,7 @@ def get_aerodromes():
         cursor.execute(sql)
         dict = {}
         for idAerodrome, lat, lon in cursor:
-            dict[idAerodrome] = "{lat: "+str(lat)+", lng: "+str(lon)+"}"
+            dict[idAerodrome.decode("utf-8")] = (lat, lon)
 
     except mysql.connector.Error as err:
         liste = "Failed select table test: {}".format(err)

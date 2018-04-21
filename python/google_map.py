@@ -1,3 +1,5 @@
+bdd=Import('/bouamrene_diop_lecalvez_ranem/data/bdd.py')
+
 def map():
     v='''
     <div class="mapcontainer">
@@ -14,17 +16,8 @@ def map():
     });
     
     '''+zone1()+zone2()+zone3()+zone4()+zone5()+zone6()+'''
-    
-    var circle = new google.maps.Circle({
-    strokeColor: '#FF0000',
-    strokeOpacity: 0.5,
-    strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.2,
-    map: map,
-    center: {lat: 49.8787, lng:1.09516 },
-    radius: 10000
-    });
+        
+    ''' + add_aerodrome() +'''
     
     }
     </script>
@@ -135,4 +128,29 @@ def zone5():
     ];
 
     '''+construct_zone()
+    return v
+
+def add_aerodrome():
+    v = '''
+    var image = {
+        // Adresse de l'icône personnalisée
+        url: '/bouamrene_diop_lecalvez_ranem/assets/img/concentric-circles.png',
+        // Taille de l'icône personnalisée
+        size: new google.maps.Size(16, 16),
+        // Origine de l'image, souvent (0, 0)
+        origin: new google.maps.Point(0,0),
+        // L'ancre de l'image. Correspond au point de l'image que l'on raccroche à la carte.
+        anchor: new google.maps.Point(8, 8)
+        };'''
+    dict = bdd.get_aerodromes()
+    for idAerodrome, coord in dict.items():
+        v+= '''
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng('''+ str(coord[0])+","+ str(coord[1]) +'''),
+            map: map,
+            icon: image,
+            title: "'''+str(idAerodrome)+'''"
+        });
+        '''
+
     return v

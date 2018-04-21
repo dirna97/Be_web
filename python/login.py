@@ -112,8 +112,8 @@ def index():
 def verif(login='',pwd=''):
     resultat = bdd.verif_connect(login, pwd)
     if resultat:
-        cookies.set_cookie("nom", str(resultat[1]).split("'")[1])
-        cookies.set_cookie("prenom", str(resultat[2]).split("'")[1])
+        cookies.set_cookie("nom", resultat[1].decode("utf-8"))
+        cookies.set_cookie("prenom", resultat[1].decode("utf-8"))
         cookies.set_cookie("login", login)
         raise HTTP_REDIRECTION(chemin + '/index.py')
     else:
